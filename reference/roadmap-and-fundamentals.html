@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desktop AI Robot Arm — Fundamentals & Master Roadmap Reference</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --border: #334155;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #38bdf8;
+      --primary-dim: rgba(56, 189, 248, 0.15);
+      --accent: #a855f7;
+      --success: #34d399;
+      --success-dim: rgba(52, 211, 153, 0.15);
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-family);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--primary-dim);
+      color: var(--primary);
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border: 1px solid var(--primary);
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    .term-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    @media (max-width: 700px) {
+      .term-grid { grid-template-columns: 1fr; }
+    }
+
+    .analogy {
+      background: rgba(168, 85, 247, 0.1);
+      border-left: 3px solid var(--accent);
+      padding: 0.5rem 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      color: #e9d5ff;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .why-tag {
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    .roadmap-step {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .step-number {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .step-content {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1.2rem;
+      flex-grow: 1;
+    }
+
+    .step-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .status-pill {
+      font-size: 0.75rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 0.5rem;
+    }
+
+    .status-done { background: var(--success-dim); color: var(--success); border: 1px solid var(--success); }
+    .status-next { background: var(--primary-dim); color: var(--primary); border: 1px solid var(--primary); }
+    .status-queue { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); border: 1px solid var(--border); }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    @media print {
+      body { background: #fff; color: #000; }
+      .card, .step-content { background: #fff; border: 1px solid #ccc; box-shadow: none; color: #000; }
+      h2, .badge, .why-tag { color: #000; }
+      .analogy { background: #f4f4f4; color: #333; border-left-color: #666; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+        <span class="badge">Reference Card #0001</span>
+        <span style="font-size: 0.85rem; color: var(--text-muted);">Antigravity Robotics Curriculum</span>
+      </div>
+      <h1>🦾 Desktop AI Robot Arm — Fundamentals & Master Roadmap</h1>
+      <p class="subtitle">Quick reference guide for core concepts, simulation-first strategy, and the 4-phase build pipeline.</p>
+    </header>
+
+    <!-- SECTION 1 -->
+    <h2>🎯 The "Simulation-First" Paradigm</h2>
+    <div class="card">
+      <h3>Why We Never Build the Physical Arm Before Simulation</h3>
+      <p style="margin-bottom: 0.75rem; color: var(--text-muted);">
+        Beginners often think: <em>"Should I build the robot first, then teach it?"</em> Modern robotics does the exact opposite:
+      </p>
+      <ul>
+        <li style="margin-bottom: 0.5rem;">
+          <strong class="why-tag">1. Zero Hardware Breakage:</strong> An untrained AI moves completely at random in its first 50,000 steps. In real life, erratic movements strip plastic gears, snap belts, and burn motor coils. In MuJoCo physics, a crash resets in 1 millisecond at $0 cost.
+        </li>
+        <li style="margin-bottom: 0.5rem;">
+          <strong class="why-tag">2. Hyper-Speed Cloud Parallelism:</strong> Mastering 3D reaching requires ~300,000 trial-and-error attempts. On a physical arm at 1 step/sec, that takes <strong>83 hours</strong> of motor wear. On a Google Colab GPU with 16 parallel virtual arms, it finishes in <strong>15–20 minutes</strong>.
+        </li>
+        <li>
+          <strong class="why-tag">3. Instant Mechanical Tuning:</strong> If an arm link is 2cm too short to reach a table corner, we edit one number in the XML file in 10 seconds—avoiding 12+ hours of CAD remodeling and 3D printing.
+        </li>
+      </ul>
+    </div>
+
+    <!-- SECTION 2 -->
+    <h2>📚 Key Terminologies Demystified</h2>
+    <div class="term-grid">
+      <div class="card">
+        <h3>Homography Mapping</h3>
+        <div class="analogy">💡 <strong>Analogy:</strong> Taking an angled photo of a rectangular notebook—the photo shows a tilted trapezoid.</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          A mathematical formula (3x3 matrix) that un-skews camera perspective, converting 2D camera pixels <code>(u, v)</code> directly into real-world table coordinates <code>(X, Y)</code> in meters.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Synthetic Test Harness</h3>
+        <div class="analogy">💡 <strong>Analogy:</strong> A flight simulator for pilots or crash-test dummy rig.</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          A test script feeding mock/simulated camera frames into our AI code to verify object detection and JSON output without needing real cameras or live hardware plugged in.
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>Domain Randomization (DR)</h3>
+        <div class="analogy">💡 <strong>Analogy:</strong> Practicing tennis on grass, clay, and in high wind so you can win on any court.</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          Randomly perturbing mass, friction, and latency during simulation training so the AI policy transfers seamlessly to physical 3D-printed hardware (<strong>Sim-to-Real</strong>).
+        </p>
+      </div>
+
+      <div class="card">
+        <h3>ONNX Runtime</h3>
+        <div class="analogy">💡 <strong>Analogy:</strong> Exporting a finished Hollywood film to a compact MP4 video.</div>
+        <p style="font-size: 0.9rem; color: var(--text-muted);">
+          A standardized compact neural network format. Trains on heavy cloud GPUs (PyTorch), then runs on local PC CPUs in &lt;5ms without heavy AI dependencies.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <h2>🗺️ The 4-Phase Master Roadmap</h2>
+    <div style="margin-top: 1rem;">
+      <div class="roadmap-step">
+        <div class="step-number">1</div>
+        <div class="step-content">
+          <div class="step-title">
+            Phase 1: Simulation & Virtual Brain (MuJoCo & Cloud PPO)
+            <span class="status-pill status-next">In Progress</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">
+            MuJoCo 6-DOF environment verified (TICKET-01 ✅). Train reaching policy on Google Colab with Domain Randomization and export to ONNX (TICKET-02 🎯).
+          </p>
+        </div>
+      </div>
+
+      <div class="roadmap-step">
+        <div class="step-number">2</div>
+        <div class="step-content">
+          <div class="step-title">
+            Phase 2: Vision & Desktop Assistant Integration
+            <span class="status-pill status-queue">Upcoming</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">
+            Gemini 2.0 Flash overhead table parsing (TICKET-04) + Central WebSocket server routing voice, screen emotions, and motor angles (TICKET-05).
+          </p>
+        </div>
+      </div>
+
+      <div class="roadmap-step">
+        <div class="step-number">3</div>
+        <div class="step-content">
+          <div class="step-title">
+            Phase 3: Electronics & Mechanics (KiCad & FreeCAD)
+            <span class="status-pill status-queue">Upcoming</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">
+            Design base controller PCB with 3x TMC2209 silent stepper drivers and pogo pin dock (TICKET-06–08). Model 3D printable links and gripper in FreeCAD (TICKET-09–10).
+          </p>
+        </div>
+      </div>
+
+      <div class="roadmap-step">
+        <div class="step-number">4</div>
+        <div class="step-content">
+          <div class="step-title">
+            Phase 4: Embedded Firmware & Sim-to-Real Bringup
+            <span class="status-pill status-queue">Upcoming</span>
+          </div>
+          <p style="font-size: 0.9rem; color: var(--text-muted);">
+            ESP32-S3 firmware with StallGuard4 sensorless homing (TICKET-11) + First real-world autonomous desk grasp (TICKET-12).
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <h2>📋 Ticket Quick Index</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket</th>
+          <th>Summary</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>TICKET-01</strong></td>
+          <td>MuJoCo 6-DOF Simulation Verification</td>
+          <td><span class="status-pill status-done">COMPLETED</span></td>
+        </tr>
+        <tr>
+          <td><strong>TICKET-02</strong></td>
+          <td>Colab PPO Training with Domain Randomization & ONNX Export</td>
+          <td><span class="status-pill status-next">READY / NEXT</span></td>
+        </tr>
+        <tr>
+          <td><strong>TICKET-03</strong></td>
+          <td>Local PC ONNX Runtime & Virtual Desk Geofencing</td>
+          <td><span class="status-pill status-queue">Blocked by 02</span></td>
+        </tr>
+        <tr>
+          <td><strong>TICKET-04</strong></td>
+          <td>Gemini 2.0 Flash Vision Planner & Disambiguation</td>
+          <td><span class="status-pill status-next">READY</span></td>
+        </tr>
+        <tr>
+          <td><strong>TICKET-05</strong></td>
+          <td>WebSocket Telemetry Bridge (PC + Desktop Assistant + Base)</td>
+          <td><span class="status-pill status-queue">Blocked by 03, 04</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <footer>
+      Saved locally in <code>reference/roadmap-and-fundamentals.html</code>. Open in any browser or print for quick desk reference.
+    </footer>
+  </div>
+
+</body>
+</html>
