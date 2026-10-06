@@ -3,10 +3,12 @@
 - **Status**: Ready for Implementation (`ready-for-agent`)
 - **Date**: 2026-10-04
 - **Related ADRs**:
-  - [ADR 0001: Hybrid Stepper-Servo Actuation & Wireless Docking](file:///g:/projects/deskto-AI-arm/docs/adr/0001-hybrid-stepper-servo-and-wireless-docking.md)
-  - [ADR 0002: Sensorless Homing, Base-Mounted Belt Drive, and WebSocket Architecture](file:///g:/projects/deskto-AI-arm/docs/adr/0002-sensorless-homing-base-steppers-and-websockets.md)
-  - [ADR 0003: 24V Bus, PLA Thermal Mitigation, and Rack-and-Pinion Gripper](file:///g:/projects/deskto-AI-arm/docs/adr/0003-power-delivery-thermal-pla-and-rack-pinion-gripper.md)
-  - [ADR 0004: Conversational Disambiguation, ONNX Runtime Inference, and Domain Randomization](file:///g:/projects/deskto-AI-arm/docs/adr/0004-conversational-ambiguity-onnx-and-domain-randomization.md)
+  - [ADR 0001: Hybrid Stepper-Servo Actuation & Wireless Docking](file:///mnt/g/projects/deskto-AI-arm/docs/adr/0001-hybrid-stepper-servo-and-wireless-docking.md)
+  - [ADR 0002: Sensorless Homing, Base-Mounted Belt Drive, and WebSocket Architecture](file:///mnt/g/projects/deskto-AI-arm/docs/adr/0002-sensorless-homing-base-steppers-and-websockets.md)
+  - [ADR 0003: 24V Bus, PLA Thermal Mitigation, and Rack-and-Pinion Gripper](file:///mnt/g/projects/deskto-AI-arm/docs/adr/0003-power-delivery-thermal-pla-and-rack-pinion-gripper.md)
+  - [ADR 0004: Conversational Disambiguation, ONNX Runtime Inference, and Domain Randomization](file:///mnt/g/projects/deskto-AI-arm/docs/adr/0004-conversational-ambiguity-onnx-and-domain-randomization.md)
+  - [ADR 0005: Hierarchical Grasping, Overhead Homography, and S-Curve Motion Execution](file:///mnt/g/projects/deskto-AI-arm/docs/adr/0005-hierarchical-grasping-homography-and-scurve-motion.md)
+- **Authoritative Master Design**: [SYSTEM_DESIGN_DOCUMENT.md](file:///mnt/g/projects/deskto-AI-arm/docs/SYSTEM_DESIGN_DOCUMENT.md)
 
 ---
 

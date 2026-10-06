@@ -74,4 +74,20 @@ An open, standardized model format enabling trained neural networks (such as our
 ### Domain Randomization (DR)
 A sim-to-real transfer technique in which physics parameters (friction, mass, sensor noise, actuator latency) are randomly perturbed across training episodes in MuJoCo, teaching the neural network policy to be invariant to real-world hardware discrepancies.
 
+### Hierarchical Control
+An architecture that partitions a complex manipulation task into two distinct layers: a neural network (RL) policy responsible for free-space 3D reaching to a pre-grasp pose, and a deterministic motion primitive responsible for vertical descent, pinch, and lifting.
 
+### Pre-Grasp Waypoint
+A spatial target pose positioned at a designated safety clearance (e.g., 50mm) directly above the target object's centroid, oriented with the correct tool yaw angle for grasping.
+
+### Deterministic Grasp Primitive
+A scripted, open-loop or sensor-guided sequence executed after reaching the pre-grasp waypoint that performs linear descent along the Z-axis, closes the parallel gripper to a calibrated pinch width, and lifts the payload vertically.
+
+### Jerk-Limited S-Curve Profile
+A 7-phase motion acceleration profile where acceleration ramps smoothly up and down rather than stepping instantaneously (infinite jerk), minimizing mechanical vibration, belt backlash, and motor resonance.
+
+### Table Homography Matrix
+A 3x3 projective transformation matrix $H$ calibrated against 4 known table reference points that maps 2D camera pixels $(u, v)$ from an overhead webcam directly into real-world $(X, Y)$ table coordinates in meters.
+
+### Safety Pause on Undock
+A firmware-level interlock where removing Desktop Assistant from its pogo charging cradle causes the arm to decelerate safely to a halt, while retaining untethered Wi-Fi voice and display interaction.

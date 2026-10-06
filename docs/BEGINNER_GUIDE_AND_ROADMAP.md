@@ -1,6 +1,7 @@
 # Desktop AI Robot Arm: Beginner Guide & Master Roadmap
 
-> **Permanent Reference Guide**: Keep this document open whenever you return to the project. It summarizes the core concepts, why we train in simulation first, the master roadmap, and where to pick up next.
+> **Permanent Reference Guide**: Keep this document open whenever you return to the project. It summarizes the core concepts, why we train in simulation first, the master roadmap, and where to pick up next.  
+> 👉 **For the complete engineering blueprint across all subsystems, see [Master System Design Document](file:///mnt/g/projects/deskto-AI-arm/docs/SYSTEM_DESIGN_DOCUMENT.md)**.
 
 ---
 

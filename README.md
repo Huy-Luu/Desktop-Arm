@@ -29,8 +29,9 @@ deskto-AI-arm/
 │
 ├── docs/
 │   ├── BEGINNER_GUIDE_AND_ROADMAP.md # Comprehensive guide and master roadmap
+│   ├── SYSTEM_DESIGN_DOCUMENT.md     # Authoritative Master System Design Document
 │   ├── SPEC-0001-desktop-ai-arm.md   # Complete system architecture specification
-│   ├── adr/                          # Architectural Decision Records (ADRs 0001–0004)
+│   ├── adr/                          # Architectural Decision Records (ADRs 0001–0005)
 │   └── tickets/                      # Tracer-bullet tickets (TICKET-01 to TICKET-12)
 │
 ├── software/
