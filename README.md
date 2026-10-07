@@ -51,8 +51,9 @@ deskto-AI-arm/
 
 ## 🚦 Current Status & Next Step
 
-- **TICKET-01 (Simulation Verification)**: ✅ **COMPLETED**. MuJoCo 6-DOF environment verified with [test_sim.py](software/test_sim.py).
-- **TICKET-02 (Colab PPO Training & ONNX Export)**: 🎯 **CURRENT NEXT STEP**. Finalize the training pipeline in [software/train_arm_3d_6dof.ipynb](software/train_arm_3d_6dof.ipynb) with domain randomization and export the actor policy to ONNX (`software/models/arm_policy.onnx`).
+- **TICKET-01 (Simulation Verification)**: ✅ **COMPLETED**. MuJoCo 6-DOF environment verified with [test_sim.py](file:///mnt/g/projects/deskto-AI-arm/software/test_sim.py).
+- **TICKET-02 (Colab PPO Training & ONNX Export)**: ✅ **COMPLETED**. Vectorized notebook with Domain Randomization and ONNX actor export ready in [software/train_arm_3d_6dof.ipynb](file:///mnt/g/projects/deskto-AI-arm/software/train_arm_3d_6dof.ipynb). See [Lesson 0001](file:///mnt/g/projects/deskto-AI-arm/lessons/0001-colab-ppo-and-domain-randomization.html) and [test_ticket02.py](file:///mnt/g/projects/deskto-AI-arm/software/test_ticket02.py).
+- **TICKET-03 (Local PC ONNX Inference & Workspace Geofence)**: 🎯 **CURRENT NEXT STEP**. Deploy `arm_policy.onnx` locally on CPU with 3D table safety boundaries.
 
 To resume at any time in a new chat, simply tell the assistant:
-> *"I'm ready to continue. Let's work on TICKET-02 (Colab PPO Training with Domain Randomization and ONNX Export)."*
+> *"I'm ready to continue. Let's work on TICKET-03 (Local PC ONNX Inference and Workspace Geofencing)."*

@@ -1,0 +1,235 @@
+:root {
+  --bg: #090d16;
+  --card-bg: #111827;
+  --card-border: #1f2937;
+  --text: #f9fafb;
+  --text-muted: #9ca3af;
+  --primary: #38bdf8;
+  --primary-dim: rgba(56, 189, 248, 0.12);
+  --accent: #818cf8;
+  --success: #34d399;
+  --success-dim: rgba(52, 211, 153, 0.12);
+  --warning: #fbbf24;
+  --warning-dim: rgba(251, 191, 36, 0.12);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  line-height: 1.65;
+  padding: 2.5rem 1.5rem;
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+header {
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.65rem;
+  border-radius: 9999px;
+  background: var(--primary-dim);
+  color: var(--primary);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 2.5rem 0 1rem;
+  color: var(--text);
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 0.5rem;
+}
+
+h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+  color: var(--accent);
+}
+
+p {
+  margin-bottom: 1.25rem;
+  color: #e5e7eb;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.callout {
+  border-left: 4px solid var(--primary);
+  background: var(--primary-dim);
+  padding: 1rem 1.25rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin: 1.5rem 0;
+}
+
+.callout-success {
+  border-left-color: var(--success);
+  background: var(--success-dim);
+}
+
+.callout-warning {
+  border-left-color: var(--warning);
+  background: var(--warning-dim);
+}
+
+pre, code {
+  font-family: var(--font-mono);
+}
+
+pre {
+  background: #030712;
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  font-size: 0.9rem;
+  margin: 1rem 0 1.5rem;
+  color: #38bdf8;
+}
+
+code {
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.88em;
+}
+
+ul, ol {
+  margin: 0 0 1.5rem 1.5rem;
+  color: #e5e7eb;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+/* Interactive Quiz Component */
+.quiz-container {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quiz-question {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+}
+
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #1f2937;
+  border: 1px solid #374151;
+  color: var(--text);
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.quiz-option:hover {
+  background: #374151;
+  border-color: var(--primary);
+}
+
+.quiz-option.correct {
+  background: rgba(52, 211, 153, 0.2);
+  border-color: var(--success);
+  color: #6ee7b7;
+}
+
+.quiz-option.wrong {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #fca5a5;
+}
+
+.quiz-feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.95rem;
+  display: none;
+}
+
+.links-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.links-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s;
+}
+
+.links-card:hover {
+  border-color: var(--primary);
+}
+
+.links-card h4 {
+  color: var(--primary);
+  margin-bottom: 0.25rem;
+}
+
+footer {
+  margin-top: 4rem;
+  border-top: 1px solid var(--card-border);
+  padding-top: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}

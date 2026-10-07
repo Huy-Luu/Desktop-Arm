@@ -12,11 +12,25 @@ Features:
 """
 
 import os
+import sys
 import numpy as np
 import gymnasium as gym
 from gymnasium import spaces
 
-# Embedded MuJoCo MJCF XML definition so this file runs standalone without external dependencies
+# Automatically configure NVIDIA EGL ICD on Linux/Colab if missing
+if sys.platform.startswith("linux"):
+    nvidia_icd_path = "/usr/share/glvnd/egl_vendor.d/10_nvidia.json"
+    if not os.path.exists(nvidia_icd_path):
+        try:
+            os.makedirs(os.path.dirname(nvidia_icd_path), exist_ok=True)
+            with open(nvidia_icd_path, "w") as f:
+                f.write('{\n  "file_format_version" : "1.0.0",\n  "ICD" : {\n    "library_path" : "libEGL_nvidia.so.0"\n  }\n}')
+        except Exception:
+            pass
+
+# Enable GPU-accelerated headless rendering by default on Linux
+if "MUJOCO_GL" not in os.environ:
+    os.environ["MUJOCO_GL"] = "egl"
 DESKTOP_ARM_6DOF_XML = """
 <mujoco model="desktop_arm_6dof">
   <compiler angle="radian" coordinate="local" inertiafromgeom="true"/>
@@ -138,7 +152,7 @@ class DesktopArm6DOFEnv(gym.Env):
     """
     metadata = {"render_modes": ["rgb_array"], "render_fps": 40}
 
-    def __init__(self, xml_path=None, render_mode=None, max_episode_steps=150, camera_name="cam_isometric"):
+    def __init__(self, xml_path=None, render_mode=None, max_episode_steps=150, camera_name="cam_isometric", domain_randomization=False):
         super().__init__()
         
         # Enable GPU-accelerated headless rendering if running in Colab/Linux
@@ -161,9 +175,16 @@ class DesktopArm6DOFEnv(gym.Env):
         self.render_mode = render_mode
         self.camera_name = camera_name
         self.max_episode_steps = max_episode_steps
+        self.domain_randomization = domain_randomization
         self.step_count = 0
         self.frame_skip = 5  # 5 * 0.005s = 0.025s per step (40 Hz control frequency)
         self.action_scale = 0.05  # Maximum radian delta per control step
+
+        # Nominal physics properties for Domain Randomization
+        self.default_dof_damping = self.model.dof_damping.copy()
+        self.default_body_mass = self.model.body_mass.copy()
+        self.default_geom_friction = self.model.geom_friction.copy()
+        self.prev_action = np.zeros(6, dtype=np.float32)
 
         # Extract IDs
         self.ee_site_id = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_SITE, "ee_site")
@@ -205,9 +226,28 @@ class DesktopArm6DOFEnv(gym.Env):
     def reset(self, seed=None, options=None):
         super().reset(seed=seed)
         self.step_count = 0
+        self.prev_action = np.zeros(6, dtype=np.float32)
 
         # Reset MuJoCo physics state
         self.mujoco.mj_resetData(self.model, self.data)
+
+        # Domain Randomization (Sim-to-Real): perturb physics if active
+        if self.domain_randomization:
+            # 1. Joint damping perturbation: +/- 20%
+            damping_noise = self.np_random.uniform(0.8, 1.2, size=len(self.default_dof_damping))
+            self.model.dof_damping[:] = self.default_dof_damping * damping_noise
+            
+            # 2. Link mass perturbation: +/- 15%
+            mass_noise = self.np_random.uniform(0.85, 1.15, size=len(self.default_body_mass))
+            self.model.body_mass[:] = self.default_body_mass * mass_noise
+            
+            # 3. Geom friction perturbation: +/- 20%
+            friction_noise = self.np_random.uniform(0.8, 1.2, size=len(self.default_geom_friction))
+            self.model.geom_friction[:, 0] = self.default_geom_friction[:, 0] * friction_noise
+        else:
+            self.model.dof_damping[:] = self.default_dof_damping
+            self.model.body_mass[:] = self.default_body_mass
+            self.model.geom_friction[:] = self.default_geom_friction
 
         # Initialize to a natural home pose (slight bend in shoulder and elbow)
         home_qpos = np.array([0.0, 0.35, 0.55, 0.0, 0.2, 0.0])
@@ -242,8 +282,18 @@ class DesktopArm6DOFEnv(gym.Env):
         self.step_count += 1
         action = np.clip(action, -1.0, 1.0)
 
+        # Domain Randomization: Command latency & action noise
+        if self.domain_randomization:
+            alpha = float(self.np_random.uniform(0.6, 0.9))
+            filtered_action = (1.0 - alpha) * self.prev_action + alpha * action
+            noise = self.np_random.normal(0.0, 0.02, size=6).astype(np.float32)
+            applied_action = np.clip(filtered_action + noise, -1.0, 1.0)
+            self.prev_action = action.copy()
+        else:
+            applied_action = action
+
         # Update position setpoints incrementally for smooth trajectory
-        target_ctrl = self.data.ctrl[:6] + (action * self.action_scale)
+        target_ctrl = self.data.ctrl[:6] + (applied_action * self.action_scale)
         self.data.ctrl[:6] = np.clip(target_ctrl, self.ctrl_min, self.ctrl_max)
 
         # Run MuJoCo physics simulation
@@ -284,7 +334,15 @@ class DesktopArm6DOFEnv(gym.Env):
         if self.render_mode != "rgb_array":
             return None
         if self.renderer is None:
-            self.renderer = self.mujoco.Renderer(self.model, height=480, width=640)
+            try:
+                self.renderer = self.mujoco.Renderer(self.model, height=480, width=640)
+            except Exception as e:
+                # Fallback to software CPU renderer if EGL context fails
+                try:
+                    os.environ["MUJOCO_GL"] = "osmesa"
+                    self.renderer = self.mujoco.Renderer(self.model, height=480, width=640)
+                except Exception:
+                    raise RuntimeError(f"MuJoCo rendering failed: {e}. Check GPU and EGL configuration.")
 
         self.renderer.update_scene(self.data, camera=self.camera_name)
         return self.renderer.render()

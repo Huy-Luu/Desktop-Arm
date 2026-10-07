@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson 0001: Cloud PPO Training, Domain Randomization & ONNX</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <span class="badge">Lesson 0001 • Phase 1 Simulation & Virtual Brain</span>
+      <h1>Mastering Cloud PPO Training, Domain Randomization & ONNX</h1>
+      <p class="subtitle">A hands-on guide for beginners to teach a virtual 6-DOF arm to move in 3D space.</p>
+    </header>
+
+    <div class="callout callout-success">
+      <strong>🎯 Grounded in the Mission:</strong> Before we assemble physical 3D-printed links or motors, we train our AI policy in Google DeepMind MuJoCo on Google Colab. A virtual crash costs $0 and resets in 1 millisecond.
+    </div>
+
+    <h2>1. The Four Core Pillars of Ticket 02</h2>
+    <p>To train our 6-DOF desktop robot arm to reach any 3D coordinate on a table, we rely on four interconnected concepts:</p>
+
+    <div class="card">
+      <h3>A. Vectorized Parallel Environments (Hyper-Speed Training)</h3>
+      <p>In standard robotics simulation, running a single simulated arm takes 83 hours to complete 300,000 trial-and-error movements. By using <strong>Vectorized Environments</strong> (<code>SubprocVecEnv</code>), we spawn <strong>16 parallel virtual robot arms</strong> simultaneously on Google Colab.</p>
+      <p>Instead of 1 step at a time, we collect 16 experience steps simultaneously, boosting throughput to <strong>over 2,000 frames per second (FPS)</strong>. Your AI completes 300,000 learning steps in just <strong>15 to 20 minutes</strong> on a free cloud GPU.</p>
+    </div>
+
+    <div class="card">
+      <h3>B. Proximal Policy Optimization (PPO)</h3>
+      <p>PPO is an Actor-Critic algorithm that balances exploratory learning with stability:</p>
+      <ul>
+        <li><strong>The Actor (The Motor Driver):</strong> A neural network taking the 27-dimensional observation vector (joint angles, velocities, end-effector position, and target position) and outputting 6 continuous joint velocity/angle deltas.</li>
+        <li><strong>The Critic (The Evaluator):</strong> A neural network that estimates the future cumulative reward (distance to goal) from the current state.</li>
+        <li><strong>The PPO Clip:</strong> During updates, PPO penalizes drastic policy changes (clipping the objective between $1-\epsilon$ and $1+\epsilon$, typically $\epsilon = 0.2$). This prevents the neural network from taking catastrophic leaps and unlearning prior skills.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>C. Domain Randomization (Bridging the Reality Gap)</h3>
+      <p>In pure MuJoCo simulation, physics are mathematically pristine: friction is uniform and link masses are exact. On a real 3D-printed desk arm:</p>
+      <ul>
+        <li>PLA plastic bearings have varied friction ($10\%-20\%$ variance).</li>
+        <li>Micro-servos have command transmission latencies ($10\text{ ms}-30\text{ ms}$).</li>
+        <li>Print infill causes slight variations in link mass ($\pm 15\%$).</li>
+      </ul>
+      <p><strong>Domain Randomization (DR)</strong> deliberately perturbs these physical values across episodes during training. By practicing in a thousand varied virtual worlds, the AI policy develops robustness and transfers smoothly to real hardware (Sim-to-Real).</p>
+    </div>
+
+    <div class="card">
+      <h3>D. ONNX (Open Neural Network Exchange)</h3>
+      <p>PyTorch is great for training on cloud GPUs, but requires gigabytes of dependencies to run locally. <strong>ONNX</strong> serializes the trained actor network into a lightweight, platform-agnostic computational graph.</p>
+      <p>Your local host PC runs the policy using <code>onnxruntime</code> in under <strong>5 milliseconds per forward pass</strong> on a standard CPU, with zero PyTorch or CUDA dependencies.</p>
+    </div>
+
+    <h2>2. Interactive Knowledge Check (Retrieval Practice)</h2>
+    <p>Test your intuition on these core concepts. Immediate feedback will confirm your reasoning.</p>
+
+    <!-- Quiz 1 -->
+    <div class="quiz-container" id="quiz1">
+      <div class="quiz-question">Q1: Why do we train with 16 vectorized parallel environments instead of just one?</div>
+      <button class="quiz-option" onclick="checkAnswer('quiz1', 0, false)">Because one environment cannot compute forward kinematics</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz1', 1, true)">Because parallelizing environments scales up sample rates</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz1', 2, false)">Because multiple environments eliminate inverse singularities</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz1', 3, false)">Because single environments consume too much cloud memory</button>
+      <div class="quiz-feedback" id="quiz1-fb"></div>
+    </div>
+
+    <!-- Quiz 2 -->
+    <div class="quiz-container" id="quiz2">
+      <div class="quiz-question">Q2: What is the primary purpose of Domain Randomization during MuJoCo training?</div>
+      <button class="quiz-option" onclick="checkAnswer('quiz2', 0, false)">To accelerate the neural network training on cloud machines</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz2', 1, false)">To generate smooth trajectory paths without using S-curves</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz2', 2, true)">To make policies robust against physical hardware differences</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz2', 3, false)">To replace numerical inverse kinematics solvers completely</button>
+      <div class="quiz-feedback" id="quiz2-fb"></div>
+    </div>
+
+    <!-- Quiz 3 -->
+    <div class="quiz-container" id="quiz3">
+      <div class="quiz-question">Q3: Why do we export our final trained policy to the ONNX model format?</div>
+      <button class="quiz-option" onclick="checkAnswer('quiz3', 0, false)">To perform continuous policy training on the local desktop</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz3', 1, true)">To enable lightweight sub-5 millisecond CPU local execution</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz3', 2, false)">To render high resolution three-dimensional video frames</button>
+      <button class="quiz-option" onclick="checkAnswer('quiz3', 3, false)">To compile the firmware directly into microcontroller code</button>
+      <div class="quiz-feedback" id="quiz3-fb"></div>
+    </div>
+
+    <h2>3. Recommended Primary Sources</h2>
+    <div class="links-grid">
+      <a href="https://spinningup.openai.com/en/latest/algorithms/ppo.html" target="_blank" class="links-card">
+        <h4>OpenAI Spinning Up: PPO</h4>
+        <p>The definitive, beginner-friendly guide to Proximal Policy Optimization theory and equations.</p>
+      </a>
+      <a href="https://mujoco.readthedocs.io/en/latest/modeling.html" target="_blank" class="links-card">
+        <h4>MuJoCo Physics Modeling</h4>
+        <p>DeepMind's guide to MJCF models, kinematic trees, joint damping, and friction parameters.</p>
+      </a>
+      <a href="../reference/roadmap-and-fundamentals.html" class="links-card">
+        <h4>Master Roadmap & Fundamentals</h4>
+        <p>Our permanent desktop reference sheet covering all 4 project phases.</p>
+      </a>
+    </div>
+
+    <div class="callout callout-warning">
+      <strong>💬 Pair Programming & Teacher Reminder:</strong><br>
+      As your AI instructor, I am here for every question. If any concept (like policy clipping, observation vectors, or vectorized buffers) feels unclear, ask right away!
+    </div>
+
+    <footer>
+      Desktop AI Robot Arm Curriculum • Lesson 0001 • Pair Programming Lab
+    </footer>
+  </div>
+
+  <script>
+    function checkAnswer(quizId, optionIndex, isCorrect) {
+      const container = document.getElementById(quizId);
+      const buttons = container.getElementsByClassName('quiz-option');
+      const feedback = document.getElementById(quizId + '-fb');
+
+      for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+        if (i === optionIndex) {
+          buttons[i].classList.add(isCorrect ? 'correct' : 'wrong');
+        }
+      }
+
+      feedback.style.display = 'block';
+      if (isCorrect) {
+        feedback.className = 'quiz-feedback callout callout-success';
+        feedback.innerHTML = '<strong>✓ Correct!</strong> You nailed the fundamental concept.';
+      } else {
+        feedback.className = 'quiz-feedback callout callout-warning';
+        feedback.innerHTML = '<strong>✗ Not quite.</strong> Review the explanation above and try to recall the core mechanism.';
+      }
+    }
+  </script>
+</body>
+</html>
