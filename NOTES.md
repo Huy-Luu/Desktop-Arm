@@ -21,3 +21,7 @@
    - Full wireless capability: Desktop Assistant can operate standalone on internal battery when unseated, communicating over Wi-Fi / ESP-NOW.
 3. **Workspace Vision**:
    - Fixed overhead webcam viewing the table workspace. Gemini 2.0 Flash extracts target object bounding boxes and normalized coordinates, mapped via homography into MuJoCo world space.
+4. **Pet Persona & Expressive Motion**:
+   - The arm is treated as a living desktop companion / pet (gripper acting as a mechanical dog head).
+   - Motion is not sterile industrial CNC movement: requires gaze tracking, inquisitive head-tilt ($\pm 15^\circ$ roll), breathing/idling oscillations, affectionate nudges, and behavioral states (curiosity, play, rest).
+   - Motion architecture combines analytical IK boundaries with AI/procedural expressive motion synthesis.

@@ -91,3 +91,25 @@ A 3x3 projective transformation matrix $H$ calibrated against 4 known table refe
 
 ### Safety Pause on Undock
 A firmware-level interlock where removing Desktop Assistant from its pogo charging cradle causes the arm to decelerate safely to a halt, while retaining untethered Wi-Fi voice and display interaction.
+
+---
+
+## Pet Companion & Expressive Motion Concepts
+
+### Expressive Robotics
+A robotic design paradigm (pioneered by Disney Research, Sony AIBO, and Anki Vector) where robot motion conveys intent, emotion, personality, and life, rather than merely optimizing for shortest-time or industrial straight-line efficiency.
+
+### Inquisitive Head-Tilt (Canine Roll Bias)
+An expressive kinematic primitive where the end-effector (the "dog head") tilts sideways along its roll axis ($\pm 12^\circ$ to $\pm 18^\circ$) while maintaining visual gaze on a target object, signaling curiosity, questioning, or heightened attention.
+
+### Idling / Breathing Oscillation
+Subtle, continuous low-frequency (0.2 Hz – 0.5 Hz) harmonic or Perlin-noise oscillations injected into joint setpoints during idle states, giving the mechanical arm the illusion of breathing and resting life, preventing it from appearing "powered off" or dead.
+
+### Compliant Interaction (Soft Joint Yield)
+Motor control behavior where joint stiffness is intentionally limited (via current limiting or impedance control) so that when a human touches, strokes, or pushes the robot's head/neck, it gently yields and responds to touch rather than rigidly fighting the user.
+
+### Behavior Tree (BT)
+A modular hierarchical execution model used in robotics and game AI that evaluates environmental conditions (from Gemini vision and audio) to transition cleanly between distinct pet states (e.g. `SLEEPING`, `ALERT_TRACKING`, `CURIOUS_SNIFFING`, `PLAYFUL_NUDGE`, `GRASP_FETCH`).
+
+### Trajectory Generator (Motion Planner)
+A mathematical algorithm—hosted either on the host PC (streaming at 50Hz) or in ESP32 firmware—that translates a static target point into a continuous time-series of positions, velocities, and accelerations adhering to velocity limits and S-curve jerk constraints.
